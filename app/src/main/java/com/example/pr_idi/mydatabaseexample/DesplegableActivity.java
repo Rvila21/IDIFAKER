@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -29,12 +28,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class DesplegableActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCercaCamera.OnFragmentInteractionListener
-        , FragmentAbout.OnFragmentInteractionListener, FragmentAfegir.OnFragmentInteractionListener {
+        , FragmentAbout.OnFragmentInteractionListener, FragmentAfegir.OnFragmentInteractionListener,any_view_layout.OnFragmentInteractionListener {
 
     private FilmData filmData;
     ListView lista = null;
@@ -86,45 +84,22 @@ public class DesplegableActivity extends AppCompatActivity
 
         lista = (ListView)findViewById(R.id.listView_Lista);
         //rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
+        cleanDB();
         //showList();
         showFilms();
+        //rv_any.setVisibility(View.GONE);
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
-    private void showList() {
-        //Db stuff
-        filmData = new FilmData(this);
-        filmData.open();
-
-        setContentView(R.layout.fragment_any_view_layout);
-        rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
-        List<Film> values = filmData.getAllFilms();
-        while(values.size()>0){
-            Film del = values.get(0);
-            filmData.deleteFilm(del);
-            values.remove(0);
-        }
-
-        for(int i = 0; i < 7;++i){
-           Film film = filmData.createFilm(Tx_titols[i],Tx_directors[i],Tx_paisos[i],int_anys[i],Tx_protagonista[i],int_val[i]);
-           values.add(film);
-        }
-        rview_any_adapter = new rview_any_adapter(values);
-        rv_any.setHasFixedSize(true);
-        rview_any_LayoutManager = new LinearLayoutManager(this);
-        rv_any.setAdapter(rview_any_adapter);
-        rv_any.setLayoutManager(rview_any_LayoutManager);
-        rview_any_adapter.notifyDataSetChanged();
-    }
-
-    private void showFilms() {
+    private void cleanDB(){
         //Db stuff
         filmData = new FilmData(this);
         filmData.open();
 
         List<Film> values = filmData.getAllFilms();
+
         while(values.size()>0){
             Film del = values.get(0);
             filmData.deleteFilm(del);
@@ -136,6 +111,32 @@ public class DesplegableActivity extends AppCompatActivity
             Film film = filmData.createFilm(Tx_titols[i],Tx_directors[i],Tx_paisos[i],int_anys[i],Tx_protagonista[i],int_val[i]);
             values.add(film);
         }
+
+    }
+
+    private void showList() {
+        //Db stuff
+        filmData = new FilmData(this);
+        filmData.open();
+
+       // setContentView(R.layout.fragment_any_view_layout);
+        rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
+        List<Film> values = filmData.getAllFilms();
+
+        rview_any_adapter = new rview_any_adapter(values);
+        rv_any.setHasFixedSize(true);
+        //rview_any_LayoutManager = new LinearLayoutManager(this);
+        rv_any.setAdapter(rview_any_adapter);
+        //rv_any.setLayoutManager(rview_any_LayoutManager);
+        rview_any_adapter.notifyDataSetChanged();
+    }
+
+    private void showFilms() {
+        //Db stuff
+        filmData = new FilmData(this);
+        filmData.open();
+
+        List<Film> values = filmData.getAllFilms();
 
         ArrayList<String> values_titles = filmData.getAllFilmsTitles();
 
@@ -245,12 +246,16 @@ public class DesplegableActivity extends AppCompatActivity
         if (id == R.id.nav_camera) {
             // Handle the camera action
             MainView = true;
+            showFilms();
             lista.setVisibility(View.VISIBLE);
             searchView.setVisibility(View.VISIBLE);
         } else if (id == R.id.nav_gallery) {
             MainView = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.GONE);
+            //showList();
+            fragment = new any_view_layout();
+            FragTransaction = true;
 
         } else if (id == R.id.nav_slideshow) {
             MainView = false;

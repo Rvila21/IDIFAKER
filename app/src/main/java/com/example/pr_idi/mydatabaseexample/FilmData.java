@@ -112,7 +112,7 @@ public class FilmData {
                 MySQLiteHelper.COLUMN_PROTAGONIST + "," +
                 MySQLiteHelper.COLUMN_CRITICS_RATE +
                 " FROM " + MySQLiteHelper.TABLE_FILMS +
-                " WHERE " +  MySQLiteHelper.COLUMN_DIRECTOR + "  LIKE  '%" +search + "%' "
+                " WHERE " +  MySQLiteHelper.COLUMN_PROTAGONIST + "  LIKE  '%" +search + "%' "
                 ;
 
 
