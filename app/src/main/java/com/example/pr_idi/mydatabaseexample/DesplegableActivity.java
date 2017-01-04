@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -28,11 +29,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DesplegableActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCercaCamera.OnFragmentInteractionListener
-        , FragmentAbout.OnFragmentInteractionListener, FragmentAfegir.OnFragmentInteractionListener,any_view_layout.OnFragmentInteractionListener {
+        , FragmentAbout.OnFragmentInteractionListener, FragmentAfegir.OnFragmentInteractionListener,any_view_layout.OnFragmentInteractionListener{
 
     private FilmData filmData;
     ListView lista = null;
@@ -83,8 +85,7 @@ public class DesplegableActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         lista = (ListView)findViewById(R.id.listView_Lista);
-        //rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
-        cleanDB();
+        if(R.id.anyrviewid != 0)cleanDB();
         //showList();
         showFilms();
         //rv_any.setVisibility(View.GONE);
@@ -98,6 +99,7 @@ public class DesplegableActivity extends AppCompatActivity
         filmData = new FilmData(this);
         filmData.open();
 
+        //setContentView(R.layout.fragment_any_view_layout);
         List<Film> values = filmData.getAllFilms();
 
         while(values.size()>0){
@@ -118,16 +120,16 @@ public class DesplegableActivity extends AppCompatActivity
         //Db stuff
         filmData = new FilmData(this);
         filmData.open();
-
-       // setContentView(R.layout.fragment_any_view_layout);
         rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
+       //setContentView(R.layout.fragment_any_view_layout);
+        //rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
         List<Film> values = filmData.getAllFilms();
 
         rview_any_adapter = new rview_any_adapter(values);
         rv_any.setHasFixedSize(true);
-        //rview_any_LayoutManager = new LinearLayoutManager(this);
+        rview_any_LayoutManager = new LinearLayoutManager(this);
         rv_any.setAdapter(rview_any_adapter);
-        //rv_any.setLayoutManager(rview_any_LayoutManager);
+        rv_any.setLayoutManager(rview_any_LayoutManager);
         rview_any_adapter.notifyDataSetChanged();
     }
 
@@ -248,29 +250,33 @@ public class DesplegableActivity extends AppCompatActivity
             MainView = true;
             showFilms();
             lista.setVisibility(View.VISIBLE);
-            searchView.setVisibility(View.VISIBLE);
+            searchView.setVisibility(View.GONE);
         } else if (id == R.id.nav_gallery) {
             MainView = false;
             lista.setVisibility(View.GONE);
-            searchView.setVisibility(View.GONE);
-            //showList();
+            searchView.setVisibility(View.VISIBLE);
             fragment = new any_view_layout();
             FragTransaction = true;
+            //showList();
 
         } else if (id == R.id.nav_slideshow) {
             MainView = false;
             lista.setVisibility(View.GONE);
+            searchView.setVisibility(View.GONE);
             fragment = new FragmentAfegir();
             FragTransaction = true;
         } else if (id == R.id.nav_manage) {
             MainView = false;
             lista.setVisibility(View.GONE);
+            searchView.setVisibility(View.GONE);
         } else if (id == R.id.nav_share) {
             MainView = false;
             lista.setVisibility(View.GONE);
+            searchView.setVisibility(View.GONE);
         } else if (id == R.id.nav_send) {
             MainView = false;
             lista.setVisibility(View.GONE);
+            searchView.setVisibility(View.GONE);
             fragment = new FragmentAbout();
             FragTransaction = true;
 

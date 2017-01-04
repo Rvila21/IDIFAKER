@@ -2,26 +2,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/White"
     tools:context="com.example.pr_idi.mydatabaseexample.FragmentAfegir">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/textPrimary"
         android:id="@+id/aenunciat"
         android:gravity="center"
         android:text="Afegir Pelicula"
-        android:textSize="40dp"/>
+        android:textSize="35dp"
+        android:textStyle="bold"/>
     <Button
         android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_height="45dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
         android:id="@+id/aButton"
         android:text="Afegir"
         android:textSize="20dp"
@@ -32,11 +30,12 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:id="@+id/aTitol"
         android:layout_below="@id/aenunciat"
         android:text="TITOL"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -50,7 +49,8 @@
         android:id = "@+id/aDirector"
         android:layout_below="@id/aedTitol"
         android:text="DIRECTOR"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -64,7 +64,8 @@
         android:id = "@+id/aPais"
         android:layout_below="@id/aedDirector"
         android:text="PAIS"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -78,7 +79,8 @@
         android:id = "@+id/aAny"
         android:layout_below="@id/aedPais"
         android:text="ANY"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -92,7 +94,8 @@
         android:id = "@+id/aProtagonista"
         android:layout_below="@id/aedAny"
         android:text="PROTAGONISTA"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -106,7 +109,8 @@
         android:id = "@+id/aCrate"
         android:layout_below="@id/aedProtagonista"
         android:text="VALORACIÓ CRÍTICA"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"/>
 
     <EditText
         android:layout_width="match_parent"

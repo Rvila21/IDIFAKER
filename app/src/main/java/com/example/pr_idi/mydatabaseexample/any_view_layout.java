@@ -4,9 +4,13 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 
 /**
@@ -24,8 +28,10 @@ public class any_view_layout extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FilmData filmData;
+    RecyclerView rv_any;
+    RecyclerView.Adapter rview_any_adapter;
+    RecyclerView.LayoutManager rview_any_LayoutManager;;
 
     private OnFragmentInteractionListener mListener;
 
@@ -55,8 +61,6 @@ public class any_view_layout extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -64,7 +68,22 @@ public class any_view_layout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_any_view_layout, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_any_view_layout, container, false);
+
+        filmData = new FilmData(getActivity());
+        filmData.open();
+        rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
+        //setContentView(R.layout.fragment_any_view_layout);
+        //rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
+        List<Film> values = filmData.getAllFilms();
+
+        rview_any_adapter = new rview_any_adapter(values);
+        rv_any.setHasFixedSize(true);
+        rview_any_LayoutManager = new LinearLayoutManager(getActivity());
+        rv_any.setAdapter(rview_any_adapter);
+        rv_any.setLayoutManager(rview_any_LayoutManager);
+        rview_any_adapter.notifyDataSetChanged();
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
