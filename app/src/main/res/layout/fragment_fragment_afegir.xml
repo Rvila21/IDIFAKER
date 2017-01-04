@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.pr_idi.mydatabaseexample.FragmentAfegir">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aenunciat"
+        android:gravity="center"
+        android:text="Afegir Pelicula"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/aTitol"
+        android:layout_below="@id/aenunciat"
+        android:text="TITOL"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/aedTitol"
+        android:layout_below="@id/aTitol"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/aDirector"
+        android:layout_below="@id/aedTitol"
+        android:text="DIRECTOR"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/aedDirector"
+        android:layout_below="@id/aDirector"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/aPais"
+        android:layout_below="@id/aedDirector"
+        android:text="PAIS"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/aedPais"
+        android:layout_below="@id/aPais"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/aAny"
+        android:layout_below="@id/aedPais"
+        android:text="ANY"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/aedAny"
+        android:layout_below="@id/aAny"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/aProtagonista"
+        android:layout_below="@id/aedAny"
+        android:text="PROTAGONISTA"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/aedProtagonista"
+        android:layout_below="@id/aProtagonista"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/aCrate"
+        android:layout_below="@id/aedProtagonista"
+        android:text="VALORACIÓ CRÍTICA"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/aedCrate"
+        android:layout_below="@id/aCrate"/>
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="30dp"
+        android:id="@+id/aButton"
+        android:text="Afegir"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:onClick="onClick"/>
+
+</RelativeLayout>

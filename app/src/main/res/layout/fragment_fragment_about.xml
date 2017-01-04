@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context="com.example.pr_idi.mydatabaseexample.FragmentAbout">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/about1"
+            android:text="Aquesta aplicació esta desenvolupda per:"
+            android:textStyle="bold|italic"
+            android:textSize="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/about2"
+            android:layout_below="@id/about1"
+            android:layout_marginTop="40dp"
+            android:text="Enrique González Sequeira"
+            android:textStyle="bold|italic"
+            android:textSize="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/about3"
+            android:layout_below="@id/about2"
+            android:text="Roger Vila Muñoz"
+            android:textStyle="bold|italic"
+            android:textSize="20dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/about4"
+            android:layout_below="@id/about3"
+            android:text="IDI Tardor 2016"
+            android:textStyle="bold|italic"
+            android:textSize="20dp"/>
+
+
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="200dp"
+            android:id="@+id/imageView2"
+            android:layout_below="@id/about4"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/fiblogo" />
+
+</RelativeLayout>
