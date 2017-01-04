@@ -4,18 +4,35 @@
     android:layout_height="match_parent"
     tools:context="com.example.pr_idi.mydatabaseexample.FragmentAfegir">
 
-
-    <TextView
+    <View
         android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        />
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@style/TextAppearance.AppCompat.Body1"
         android:id="@+id/aenunciat"
         android:gravity="center"
         android:text="Afegir Pelicula"
-        android:textSize="30dp"/>
+        android:textSize="40dp"/>
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="20dp"
+        android:id="@+id/aButton"
+        android:text="Afegir"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:onClick="onClick"/>
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:id="@+id/aTitol"
         android:layout_below="@id/aenunciat"
         android:text="TITOL"
@@ -97,16 +114,6 @@
         android:id="@+id/aedCrate"
         android:layout_below="@id/aCrate"/>
 
-    <Button
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="30dp"
-        android:id="@+id/aButton"
-        android:text="Afegir"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        android:onClick="onClick"/>
+
 
 </RelativeLayout>
