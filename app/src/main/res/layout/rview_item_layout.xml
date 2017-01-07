@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
-
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:background="@color/colorDivider">
     <TextView
         android:layout_width="200dp"
         android:layout_height="wrap_content"
@@ -10,7 +10,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:text = "A repetir IDI putos"
+        android:text = "Titol"
         android:textSize="20sp"
         android:textStyle="bold"
         android:gravity="center"
@@ -22,7 +22,7 @@
         android:layout_toRightOf="@id/titol"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:text = "Pere Pau"
+        android:text = "Blundell"
         android:gravity="center"
         />
     <TextView
@@ -32,7 +32,7 @@
         android:layout_toRightOf="@id/titol"
         android:layout_below="@id/director"
         android:layout_marginTop="10dp"
-        android:text="En la piña debajo del mar"
+        android:text="Pais"
         android:gravity="center"
         />
     <TextView
@@ -42,7 +42,7 @@
         android:layout_toRightOf="@id/pais"
         android:layout_below="@id/director"
         android:layout_marginTop="10dp"
-        android:text="(2016)"
+        android:text="Any"
         android:gravity="center"
         />
     <TextView
@@ -53,25 +53,25 @@
         android:layout_below="@id/pais"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
-        android:text="Zipi y Zape"
+        android:text="Protagonista"
         android:gravity="center"
         />
     <TextView
-        android:layout_width="200dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:id="@+id/valoracio"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/titol"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="4dp"
-        android:text="*****"
+        android:text="valoracio"
         android:gravity="center"
         android:textSize="50sp"
         />
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/colorPrimary"
+        android:layout_height="3dp"
+        android:background="@color/colorPrimaryDark"
         android:layout_below="@id/valoracio"
         />
 
