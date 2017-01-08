@@ -2,9 +2,7 @@ package com.example.pr_idi.mydatabaseexample;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -68,14 +67,6 @@ public class DesplegableActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -349,6 +340,25 @@ public class DesplegableActivity extends AppCompatActivity
                 break;
             case (R.id.infovalbutton):
                 //getfilm + val modify
+                String newValString = ((EditText)findViewById(R.id.infovalvalue)).getText().toString();
+                Integer newVal = Integer.parseInt(newValString);
+                TextView textView = (TextView)findViewById(R.id.infotitol);
+                String titulo = textView.getText().toString();
+                List<Film> films = filmData.getAllFilms();
+                Film choosenone = null;
+                Film aux;
+                for(Film film : films){
+                    String name = film.getTitle();
+                    if(titulo.equals(name)){
+                        choosenone = film;
+                        break;
+                    }
+                }
+                aux = choosenone;
+                if(choosenone != null) choosenone.setCritics_rate(newVal);
+                filmData.deleteFilm(aux);
+                filmData.createFilm(choosenone.getTitle(),choosenone.getDirector(),choosenone.getCountry(),choosenone.getYear(),choosenone.getProtagonist(),choosenone.getCritics_rate());
+
                 break;
             default:
                 filmData.createFilm("TEST2", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;

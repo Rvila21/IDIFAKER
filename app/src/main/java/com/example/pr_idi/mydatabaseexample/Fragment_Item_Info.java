@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,6 +38,7 @@ public class Fragment_Item_Info extends Fragment {
     private String Protagonista;
     private int Valoracio;
     private View rootView;
+    private FilmData filmData;
 
     private OnFragmentInteractionListener mListener;
 
@@ -96,6 +99,24 @@ public class Fragment_Item_Info extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    public void change_rate(Integer s){
+        List<Film> films = filmData.getAllFilms();
+        Film choosenone = null;
+        Film aux;
+        for(Film film : films){
+            String name = film.getTitle();
+            if(Titol == name){
+                choosenone = film;
+                break;
+            }
+        }
+        aux = choosenone;
+        choosenone.setCritics_rate(s);
+        filmData.deleteFilm(aux);
+        filmData.createFilm(choosenone.getTitle(),choosenone.getDirector(),choosenone.getCountry(),choosenone.getYear(),choosenone.getProtagonist(),choosenone.getCritics_rate());
+
     }
 
     @Override

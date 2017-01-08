@@ -19,6 +19,8 @@ public class FilmData {
     // Database fields
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
+    private boolean search = false;
+    private List<Film> films;
 
     // Here we only select Title and Director, must select the appropriate columns
     private String[] allColumns = { MySQLiteHelper.COLUMN_ID,
@@ -81,22 +83,33 @@ public class FilmData {
         database.delete(MySQLiteHelper.TABLE_FILMS, MySQLiteHelper.COLUMN_ID
                 + " = " + id, null);
     }
+    public void setSearch(boolean b){
+        search = b;
+    }
+
+    public void setFilt(ArrayList<Film> newList){
+        films = newList;
+    }
 
     public List<Film> getAllFilms() {
-        List<Film> comments = new ArrayList<>();
+        if(!search) {
+            List<Film> comments = new ArrayList<>();
 
-       Cursor cursor = database.query(MySQLiteHelper.TABLE_FILMS,
-                allColumns, null, null, null, null, null);
+            Cursor cursor = database.query(MySQLiteHelper.TABLE_FILMS,
+                    allColumns, null, null, null, null, null);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            Film comment = cursorToFilm(cursor);
-            comments.add(comment);
-            cursor.moveToNext();
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                Film comment = cursorToFilm(cursor);
+                comments.add(comment);
+                cursor.moveToNext();
+            }
+            // make sure to close the cursor
+            cursor.close();
+            return comments;
         }
-        // make sure to close the cursor
-        cursor.close();
-        return comments;
+
+        return films;
     }
 
     public ArrayList<String>  getStudentListByKeyword(String search) {
@@ -131,6 +144,47 @@ public class FilmData {
             Film film = cursorToFilm(cursor);
             String aux = film.getTitle();
             christmas.add(aux);
+            cursor.moveToNext();
+        }
+        // make sure to close the cursor
+        cursor.close();
+
+        return christmas;
+
+
+    }
+
+    public ArrayList<Film>  getRecycleFilter(String search) {
+        //Open connection to read only
+        ArrayList<Film> christmas = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String selectQuery =  "SELECT  rowid as " +
+                MySQLiteHelper.COLUMN_ID + "," +
+                MySQLiteHelper.COLUMN_TITLE + "," +
+                MySQLiteHelper.COLUMN_COUNTRY + "," +
+                MySQLiteHelper.COLUMN_YEAR_RELEASE + "," +
+                MySQLiteHelper.COLUMN_DIRECTOR + "," +
+                MySQLiteHelper.COLUMN_PROTAGONIST + "," +
+                MySQLiteHelper.COLUMN_CRITICS_RATE +
+                " FROM " + MySQLiteHelper.TABLE_FILMS +
+                " WHERE " +  MySQLiteHelper.COLUMN_PROTAGONIST + "  LIKE  '%" +search + "%' "
+                ;
+
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+
+        if (cursor == null) {
+            return null;
+        } else if (!cursor.moveToFirst()) {
+            cursor.close();
+            return null;
+        }
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            Film film = cursorToFilm(cursor);
+            christmas.add(film);
             cursor.moveToNext();
         }
         // make sure to close the cursor
