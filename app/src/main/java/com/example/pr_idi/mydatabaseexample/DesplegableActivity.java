@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -29,12 +28,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class DesplegableActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCercaCamera.OnFragmentInteractionListener
-        , FragmentAbout.OnFragmentInteractionListener, FragmentAfegir.OnFragmentInteractionListener,any_view_layout.OnFragmentInteractionListener{
+        , FragmentAbout.OnFragmentInteractionListener, FragmentAfegir.OnFragmentInteractionListener,any_view_layout.OnFragmentInteractionListener, rview_any_adapter.rviewHolder_any.interface2, Fragment_Item_Info.OnFragmentInteractionListener{
 
     private FilmData filmData;
     ListView lista = null;
@@ -44,6 +42,8 @@ public class DesplegableActivity extends AppCompatActivity
     SearchView searchView = null;
     ArrayAdapter<String> adapter2;
     ArrayAdapter<String> adapter3;
+    Fragment fragment;
+    Film filminfo;
 
     //pelicules de mostra
     String[] Tx_titols = {"The Arrival", "Hacksaw Ridge", "The Amazing Spiderman", "The Amazing Spiderman 2", "The Godfather", "The Godfather II", "The Godfather III"};
@@ -58,7 +58,9 @@ public class DesplegableActivity extends AppCompatActivity
      */
     private GoogleApiClient client;
     //List<Film> films = new List<Film>();
-
+    public void setfilm(Film filminfo){
+        this.filminfo = filminfo;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,20 +119,6 @@ public class DesplegableActivity extends AppCompatActivity
     }
 
     private void showList() {
-        //Db stuff
-        filmData = new FilmData(this);
-        filmData.open();
-        rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
-       //setContentView(R.layout.fragment_any_view_layout);
-        //rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
-        List<Film> values = filmData.getAllFilms();
-
-        rview_any_adapter = new rview_any_adapter(values);
-        rv_any.setHasFixedSize(true);
-        rview_any_LayoutManager = new LinearLayoutManager(this);
-        rv_any.setAdapter(rview_any_adapter);
-        rv_any.setLayoutManager(rview_any_LayoutManager);
-        rview_any_adapter.notifyDataSetChanged();
     }
 
     private void showFilms() {
@@ -139,7 +127,6 @@ public class DesplegableActivity extends AppCompatActivity
         filmData.open();
 
         List<Film> values = filmData.getAllFilms();
-
         ArrayList<String> values_titles = filmData.getAllFilmsTitles();
 
         adapter2 = new ArrayAdapter<>(this,
@@ -241,7 +228,7 @@ public class DesplegableActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Fragment fragment = null;
+        fragment = null;
         boolean FragTransaction = false;
         boolean MainView = true;
 
@@ -357,10 +344,32 @@ public class DesplegableActivity extends AppCompatActivity
                 adapter2.add(auxTitol);
                 adapter2.notifyDataSetChanged();
                 break;
+            case (R.id.infodelbutton):
+                //get film + film delete
+                break;
+            case (R.id.infovalbutton):
+                //getfilm + val modify
+                break;
             default:
                 filmData.createFilm("TEST2", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
                 break;
         }
+    }
+
+    @Override
+    public void thisitem(int Position) {
+        List<Film> values = filmData.getAllFilms();
+        Film film = values.get(Position);
+        Fragment_Item_Info fragmentaux = new Fragment_Item_Info();
+        fragmentaux.setTitol(film.getTitle());
+        fragmentaux.setDirector(film.getDirector());
+        fragmentaux.setPais(film.getCountry());
+        fragmentaux.setAny(film.getYear());
+        fragmentaux.setProtagonista(film.getProtagonist());
+        fragmentaux.setValoracio(film.getCritics_rate());
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.content_desplegable, fragmentaux).commit();
+        getSupportActionBar().setTitle(film.getTitle());
     }
 }
 

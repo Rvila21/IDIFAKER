@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.pr_idi.mydatabaseexample.Fragment_specificinfo">
+    tools:context="com.example.pr_idi.mydatabaseexample.Fragment_Item_Info">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,14 +115,6 @@
         android:text="Editar valoració de la Pel·lícula?"
         android:textSize="25dp"
         android:textColor="@color/colorPrimary"/>
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:id="@+id/infovalvalue"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_toLeftOf="@id/infovalbutton"
-        android:layout_below="@id/infovaltext"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="50dp"
@@ -134,6 +126,15 @@
         android:text="EDITAR"
         android:textStyle="bold"
         android:onClick="onClick"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/infovalvalue"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_toLeftOf="@id/infovalbutton"
+        android:layout_below="@id/infovaltext"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="3dp"

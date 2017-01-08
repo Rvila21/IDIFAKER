@@ -1,11 +1,15 @@
 package com.example.pr_idi.mydatabaseexample;
 
+import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.StaticLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +20,20 @@ import java.util.List;
 
 public class rview_any_adapter extends RecyclerView.Adapter<rview_any_adapter.rviewHolder_any> {
     private List<Film> films;
+    private Context ctx;
 
-    public rview_any_adapter(List<Film> films){
+
+
+
+    public rview_any_adapter(List<Film> films, Context ctx){
         this.films = films;
+        this.ctx = ctx;
     }
 
     @Override
     public rviewHolder_any onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.rview_item_layout,parent,false);
-        rviewHolder_any rviewHolder_any = new rviewHolder_any(view);
+        rviewHolder_any rviewHolder_any = new rviewHolder_any(view, films,ctx);
         return rviewHolder_any;
     }
 
@@ -44,21 +53,37 @@ public class rview_any_adapter extends RecyclerView.Adapter<rview_any_adapter.rv
         return films.size();
     }
 
-    public static class rviewHolder_any extends RecyclerView.ViewHolder {
+    public static class rviewHolder_any extends RecyclerView.ViewHolder implements View.OnClickListener{
+        List<Film> films = new ArrayList<Film>();
         TextView titol;
         TextView director;
         TextView pais;
         TextView any;
         TextView protagonista;
         TextView valoracio;
-        public rviewHolder_any(View view){
+        Context ctx;
+        interface2 myinterface2;
+        public interface interface2{
+            public void thisitem(int Position);
+        }
+        public rviewHolder_any(View view, List<Film> films, Context ctx){
             super(view);
+            view.setOnClickListener(this);
+            this.films = films;
+            this.ctx = ctx;
+            myinterface2 = (interface2) ctx;
             titol = (TextView) view.findViewById(R.id.titol);
             director = (TextView) view.findViewById(R.id.director);
             pais = (TextView) view.findViewById(R.id.pais);
             any = (TextView) view.findViewById(R.id.any);
             protagonista = (TextView) view.findViewById(R.id.protagonista);
             valoracio = (TextView) view.findViewById(R.id.valoracio);
+        }
+
+        @Override
+        public void onClick(View v){
+            int Position = getAdapterPosition();
+            myinterface2.thisitem(Position);
         }
     }
 }

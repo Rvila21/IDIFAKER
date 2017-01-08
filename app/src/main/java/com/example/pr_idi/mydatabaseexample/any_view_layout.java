@@ -1,5 +1,6 @@
 package com.example.pr_idi.mydatabaseexample;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -31,9 +32,14 @@ public class any_view_layout extends Fragment {
     private FilmData filmData;
     RecyclerView rv_any;
     RecyclerView.Adapter rview_any_adapter;
-    RecyclerView.LayoutManager rview_any_LayoutManager;;
+    RecyclerView.LayoutManager rview_any_LayoutManager;
 
     private OnFragmentInteractionListener mListener;
+    MyInterface myinterface;
+
+    public interface MyInterface{
+        public void rview_itemSelected(int Position);
+    }
 
     public any_view_layout() {
         // Required empty public constructor
@@ -73,11 +79,8 @@ public class any_view_layout extends Fragment {
         filmData = new FilmData(getActivity());
         filmData.open();
         rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
-        //setContentView(R.layout.fragment_any_view_layout);
-        //rv_any = (RecyclerView)findViewById(R.id.anyrviewid);
         List<Film> values = filmData.getAllFilms();
-
-        rview_any_adapter = new rview_any_adapter(values);
+        rview_any_adapter = new rview_any_adapter(values,getActivity());
         rv_any.setHasFixedSize(true);
         rview_any_LayoutManager = new LinearLayoutManager(getActivity());
         rv_any.setAdapter(rview_any_adapter);
@@ -88,13 +91,10 @@ public class any_view_layout extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Activity context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -121,7 +121,5 @@ public class any_view_layout extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }
