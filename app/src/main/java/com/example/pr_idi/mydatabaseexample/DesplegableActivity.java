@@ -356,6 +356,8 @@ public class DesplegableActivity extends AppCompatActivity
                 }
                 aux = choosenone;
                 if(choosenone != null) choosenone.setCritics_rate(newVal);
+                textView = (TextView)findViewById(R.id.infovaloracio);
+                textView.setText(Integer.toString(newVal));
                 filmData.deleteFilm(aux);
                 filmData.createFilm(choosenone.getTitle(),choosenone.getDirector(),choosenone.getCountry(),choosenone.getYear(),choosenone.getProtagonist(),choosenone.getCritics_rate());
 

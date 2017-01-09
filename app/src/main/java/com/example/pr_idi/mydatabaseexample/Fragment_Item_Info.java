@@ -114,6 +114,8 @@ public class Fragment_Item_Info extends Fragment {
         }
         aux = choosenone;
         choosenone.setCritics_rate(s);
+        TextView t = (TextView)rootView.findViewById(R.id.infovaloracio);
+        t.setText(Integer.toString(choosenone.getCritics_rate()));
         filmData.deleteFilm(aux);
         filmData.createFilm(choosenone.getTitle(),choosenone.getDirector(),choosenone.getCountry(),choosenone.getYear(),choosenone.getProtagonist(),choosenone.getCritics_rate());
 
