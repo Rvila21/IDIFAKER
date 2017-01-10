@@ -44,7 +44,7 @@ public class any_view_layout extends Fragment {
     public void setValues(List<Film> values) {
         //this.values = values;
         rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
-        rview_any_adapter = new rview_any_adapter(values,getActivity());
+        rview_any_adapter = new rview_any_adapter(this.values,getActivity());
         rv_any.setHasFixedSize(true);
         rview_any_LayoutManager = new LinearLayoutManager(getActivity());
         rv_any.setAdapter(rview_any_adapter);

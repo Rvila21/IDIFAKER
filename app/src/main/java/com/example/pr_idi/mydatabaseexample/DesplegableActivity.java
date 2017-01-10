@@ -203,7 +203,7 @@ public class DesplegableActivity extends AppCompatActivity
                     if(aux != null){
                         filmData.createFilm("aux3", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
                         any_view_layout fragmentaux = new any_view_layout();
-                        fragmentaux.setValues(aux);
+                        //fragmentaux.setValues(aux);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.content_desplegable, fragmentaux).commit();
                         getSupportActionBar().setTitle(film.getTitle());
