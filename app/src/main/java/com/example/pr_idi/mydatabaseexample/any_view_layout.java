@@ -94,18 +94,7 @@ public class any_view_layout extends Fragment {
         filmData = new FilmData(getActivity());
         filmData.open();
         rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
-        values = filmData.getAllFilms();
-        Collections.sort(values, new Comparator<Film>(){
-            public int compare(Film emp1, Film emp2) {
-                // ## Ascending order
-                //return Integer.compare(emp1.getYear(),emp2.getYear()); // To compare string values
-                 return Integer.valueOf(emp1.getYear()).compareTo(emp2.getYear()); // To compare integer values
-
-                // ## Descending order
-                // return emp2.getFirstName().compareToIgnoreCase(emp1.getFirstName()); // To compare string values
-                // return Integer.valueOf(emp2.getId()).compareTo(emp1.getId()); // To compare integer values
-            }
-        });
+        values = null;//filmData.getAllFilmsOrderedbyAny();
         rview_any_adapter = new rview_any_adapter(values,getActivity());
         rv_any.setHasFixedSize(true);
         rview_any_LayoutManager = new LinearLayoutManager(getActivity());
