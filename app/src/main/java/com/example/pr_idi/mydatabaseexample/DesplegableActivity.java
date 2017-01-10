@@ -20,10 +20,6 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,6 +39,7 @@ public class DesplegableActivity extends AppCompatActivity
     ArrayAdapter<String> adapter3;
     Fragment fragment;
     Film filminfo;
+    boolean recycle = false;
 
     //pelicules de mostra
     String[] Tx_titols = {"The Arrival", "Hacksaw Ridge", "The Amazing Spiderman", "The Amazing Spiderman 2", "The Godfather", "The Godfather II", "The Godfather III"};
@@ -55,7 +52,6 @@ public class DesplegableActivity extends AppCompatActivity
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    private GoogleApiClient client;
     //List<Film> films = new List<Film>();
     public void setfilm(Film filminfo){
         this.filminfo = filminfo;
@@ -82,9 +78,7 @@ public class DesplegableActivity extends AppCompatActivity
         //showList();
         showFilms();
         //rv_any.setVisibility(View.GONE);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
     }
 
     private void cleanDB(){
@@ -187,10 +181,39 @@ public class DesplegableActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                List<String> valuesfilter = filmData.getStudentListByKeyword(newText);
-                if (valuesfilter != null) setListView(valuesfilter);
-                else lista.setAdapter(null);
+                filmData.createFilm("aux1", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
+
+                if(!recycle) {
+                    List<String> valuesfilter = filmData.getStudentListByKeyword(newText);
+                    if (valuesfilter != null) setListView(valuesfilter);
+                    else lista.setAdapter(null);
+                    return false;
+                }
+                if(recycle){
+                    filmData.createFilm("aux2", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
+                List<Film> films = filmData.getAllFilms();
+                List<Film> aux = null;
+                for(Film film : films){
+                    String name = film.getProtagonist();
+                    if(name.contains(newText)){
+                        aux.add(film);
+
+                    }
+
+                    if(aux != null){
+                        filmData.createFilm("aux3", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
+                        any_view_layout fragmentaux = new any_view_layout();
+                        fragmentaux.setValues(aux);
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.content_desplegable, fragmentaux).commit();
+                        getSupportActionBar().setTitle(film.getTitle());
+                    }
+
+                }
+
+                }
                 return false;
+
             }
         });
 
@@ -228,13 +251,15 @@ public class DesplegableActivity extends AppCompatActivity
             MainView = true;
             showFilms();
             lista.setVisibility(View.VISIBLE);
-            searchView.setVisibility(View.GONE);
+            searchView.setVisibility(View.VISIBLE);
+            recycle = false;
         } else if (id == R.id.nav_gallery) {
             MainView = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.VISIBLE);
             fragment = new any_view_layout();
             FragTransaction = true;
+            recycle = true;
             //showList();
 
         } else if (id == R.id.nav_slideshow) {
@@ -286,41 +311,6 @@ public class DesplegableActivity extends AppCompatActivity
 
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Desplegable Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 
     public void onClick(View view){
         switch(view.getId()) {

@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -30,12 +32,25 @@ public class any_view_layout extends Fragment {
 
     // TODO: Rename and change types of parameters
     private FilmData filmData;
+    private List<Film> values = null;
+    View rootView;
     RecyclerView rv_any;
     RecyclerView.Adapter rview_any_adapter;
     RecyclerView.LayoutManager rview_any_LayoutManager;
 
     private OnFragmentInteractionListener mListener;
     MyInterface myinterface;
+
+    public void setValues(List<Film> values) {
+        //this.values = values;
+        rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
+        rview_any_adapter = new rview_any_adapter(values,getActivity());
+        rv_any.setHasFixedSize(true);
+        rview_any_LayoutManager = new LinearLayoutManager(getActivity());
+        rv_any.setAdapter(rview_any_adapter);
+        rv_any.setLayoutManager(rview_any_LayoutManager);
+        rview_any_adapter.notifyDataSetChanged();
+    }
 
     public interface MyInterface{
         public void rview_itemSelected(int Position);
@@ -74,12 +89,23 @@ public class any_view_layout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_any_view_layout, container, false);
+        rootView = inflater.inflate(R.layout.fragment_any_view_layout, container, false);
 
         filmData = new FilmData(getActivity());
         filmData.open();
         rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
-        List<Film> values = filmData.getAllFilms();
+        values = filmData.getAllFilms();
+        Collections.sort(values, new Comparator<Film>(){
+            public int compare(Film emp1, Film emp2) {
+                // ## Ascending order
+                //return Integer.compare(emp1.getYear(),emp2.getYear()); // To compare string values
+                 return Integer.valueOf(emp1.getYear()).compareTo(emp2.getYear()); // To compare integer values
+
+                // ## Descending order
+                // return emp2.getFirstName().compareToIgnoreCase(emp1.getFirstName()); // To compare string values
+                // return Integer.valueOf(emp2.getId()).compareTo(emp1.getId()); // To compare integer values
+            }
+        });
         rview_any_adapter = new rview_any_adapter(values,getActivity());
         rv_any.setHasFixedSize(true);
         rview_any_LayoutManager = new LinearLayoutManager(getActivity());
