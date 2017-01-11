@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,16 +28,19 @@ import java.util.List;
 
 public class DesplegableActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCercaCamera.OnFragmentInteractionListener
-        , FragmentAbout.OnFragmentInteractionListener, FragmentAfegir.OnFragmentInteractionListener,any_view_layout.OnFragmentInteractionListener, rview_any_adapter.rviewHolder_any.interface2, Fragment_Item_Info.OnFragmentInteractionListener{
+        , FragmentAbout.OnFragmentInteractionListener, FragmentAfegir.OnFragmentInteractionListener,any_view_layout.OnFragmentInteractionListener,
+        rview_any_adapter.rviewHolder_any.interface2, Fragment_Item_Info.OnFragmentInteractionListener,FragmentBuscar.OnFragmentInteractionListener{
 
     private FilmData filmData;
     ListView lista = null;
+    ListView actorList = null;
     RecyclerView rv_any;
     RecyclerView.Adapter rview_any_adapter;
     RecyclerView.LayoutManager rview_any_LayoutManager;
     SearchView searchView = null;
     ArrayAdapter<String> adapter2;
     ArrayAdapter<String> adapter3;
+    ArrayAdapter<String> adapter4;
     Fragment fragment;
     Film filminfo;
     boolean recycle = false;
@@ -74,6 +78,7 @@ public class DesplegableActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         lista = (ListView)findViewById(R.id.listView_Lista);
+        actorList = (ListView)findViewById(R.id.listViewActor);
         if(R.id.anyrviewid != 0)cleanDB();
         //showList();
         showFilms();
@@ -103,7 +108,28 @@ public class DesplegableActivity extends AppCompatActivity
 
     }
 
-    private void showList() {
+    private void showListActor(String name) {
+
+        filmData = new FilmData(this);
+        filmData.open();
+        List<Film> values = filmData.getAllFilms();
+        ArrayList<String> aux = new ArrayList<>();
+        for(Film film : values){
+            String prota = film.getProtagonist();
+            if(prota.equals(name)){
+                aux.add(film.getTitle());
+                Log.d("ola","YEP");
+            }
+
+        }
+        List<String> auxActor = aux;
+        adapter4 = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, auxActor);
+        actorList.setAdapter(adapter4);
+        actorList.setAdapter(adapter4);
+        adapter4.notifyDataSetChanged();
+        Log.d("ola","MACARROOOOOOONES");
+
     }
 
     private void showFilms() {
@@ -181,7 +207,6 @@ public class DesplegableActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filmData.createFilm("aux1", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
 
                 if(!recycle) {
                     List<String> valuesfilter = filmData.getStudentListByKeyword(newText);
@@ -190,9 +215,8 @@ public class DesplegableActivity extends AppCompatActivity
                     return false;
                 }
                 if(recycle){
-                    filmData.createFilm("aux2", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
                 List<Film> films = filmData.getAllFilms();
-                List<Film> aux = null;
+                ArrayList<Film> aux = new ArrayList<Film>();
                 for(Film film : films){
                     String name = film.getProtagonist();
                     if(name.contains(newText)){
@@ -201,9 +225,9 @@ public class DesplegableActivity extends AppCompatActivity
                     }
 
                     if(aux != null){
-                        filmData.createFilm("aux3", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
+                        List<Film>fakeraux = aux;
                         any_view_layout fragmentaux = new any_view_layout();
-                        //fragmentaux.setValues(aux);
+                        fragmentaux.setValues(fakeraux);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.content_desplegable, fragmentaux).commit();
                         getSupportActionBar().setTitle(film.getTitle());
@@ -262,6 +286,7 @@ public class DesplegableActivity extends AppCompatActivity
             recycle = true;
             //showList();
 
+
         } else if (id == R.id.nav_slideshow) {
             MainView = false;
             lista.setVisibility(View.GONE);
@@ -272,10 +297,14 @@ public class DesplegableActivity extends AppCompatActivity
             MainView = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.GONE);
+            FragTransaction = true;
+            fragment = new FragmentBuscar();
         } else if (id == R.id.nav_share) {
             MainView = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.GONE);
+            fragment = new FragmentHelp();
+            FragTransaction = true;
         } else if (id == R.id.nav_send) {
             MainView = false;
             lista.setVisibility(View.GONE);
@@ -313,45 +342,70 @@ public class DesplegableActivity extends AppCompatActivity
 
 
     public void onClick(View view){
+        Toast toast = new Toast(getApplicationContext());
         switch(view.getId()) {
+            case (R.id.actbutton):
+                Log.d("ola","he jgaksghaok");
+                EditText editText = (EditText)findViewById(R.id.editTextActor);
+                String name = editText.getText().toString();
+                if(name!="") showListActor(name);
+                else editText.setError("El camp no pot ser buit.");
+
+                break;
+
             case (R.id.aButton):
-                String auxTitol = ((EditText)findViewById(R.id.aedTitol)).getText().toString();
-                String auxDirector = ((EditText)findViewById(R.id.aedDirector)).getText().toString();
-                String auxPais = ((EditText)findViewById(R.id.aedPais)).getText().toString();
-                String auxAny = ((EditText)findViewById(R.id.aedAny)).getText().toString();
-                String auxProtagonista = ((EditText)findViewById(R.id.aedProtagonista)).getText().toString();
-                String auxCrate = ((EditText)findViewById(R.id.aedCrate)).getText().toString();
-                filmData.createFilm(auxTitol, auxDirector, auxPais, Integer.parseInt(auxAny), auxProtagonista, Integer.parseInt(auxCrate)) ;
+                String auxTitol = ((EditText) findViewById(R.id.aedTitol)).getText().toString();
+                String auxDirector = ((EditText) findViewById(R.id.aedDirector)).getText().toString();
+                String auxPais = ((EditText) findViewById(R.id.aedPais)).getText().toString();
+                String auxAny = ((EditText) findViewById(R.id.aedAny)).getText().toString();
+                String auxProtagonista = ((EditText) findViewById(R.id.aedProtagonista)).getText().toString();
+                String auxCrate = ((EditText) findViewById(R.id.aedCrate)).getText().toString();
+                filmData.createFilm(auxTitol, auxDirector, auxPais, Integer.parseInt(auxAny), auxProtagonista, Integer.parseInt(auxCrate));
                 adapter2.add(auxTitol);
                 adapter2.notifyDataSetChanged();
                 break;
+
             case (R.id.infodelbutton):
                 //get film + film delete
+                Log.d("ola", "QUE BUENA ESTA LA RUBIA DE XC");
+                toast.makeText(getApplicationContext(), "S'ha esborrat correctament", Toast.LENGTH_LONG).show();
                 break;
+
             case (R.id.infovalbutton):
                 //getfilm + val modify
-                String newValString = ((EditText)findViewById(R.id.infovalvalue)).getText().toString();
+                EditText et = (EditText)findViewById(R.id.infovalvalue);
+                String newValString = et.getText().toString();
+                if(newValString.length()==0)et.setError("El camp no pot ser buit.");
+                else{
                 Integer newVal = Integer.parseInt(newValString);
-                TextView textView = (TextView)findViewById(R.id.infotitol);
-                String titulo = textView.getText().toString();
-                List<Film> films = filmData.getAllFilms();
-                Film choosenone = null;
-                Film aux;
-                for(Film film : films){
-                    String name = film.getTitle();
-                    if(titulo.equals(name)){
-                        choosenone = film;
-                        break;
+                if (newVal >= 0 && 10 >= newVal) {
+                    TextView textView = (TextView) findViewById(R.id.infotitol);
+                    String titulo = textView.getText().toString();
+                    List<Film> films = filmData.getAllFilms();
+                    Film choosenone = null;
+                    Film aux;
+                    for (Film film : films) {
+                         name = film.getTitle();
+                        if (titulo.equals(name)) {
+                            choosenone = film;
+                        }
                     }
-                }
-                aux = choosenone;
-                if(choosenone != null) choosenone.setCritics_rate(newVal);
-                textView = (TextView)findViewById(R.id.infovaloracio);
-                textView.setText(Integer.toString(newVal));
-                filmData.deleteFilm(aux);
-                filmData.createFilm(choosenone.getTitle(),choosenone.getDirector(),choosenone.getCountry(),choosenone.getYear(),choosenone.getProtagonist(),choosenone.getCritics_rate());
+                    aux = choosenone;
+                    if (choosenone != null) choosenone.setCritics_rate(newVal);
+                    textView = (TextView) findViewById(R.id.infovaloracio);
+                    textView.setText(Integer.toString(newVal));
+                    filmData.deleteFilm(aux);
+                    filmData.createFilm(choosenone.getTitle(), choosenone.getDirector(), choosenone.getCountry(), choosenone.getYear(), choosenone.getProtagonist(), choosenone.getCritics_rate());
+                    toast.makeText(getApplicationContext(), "S'ha modificat la valoració correctament", Toast.LENGTH_LONG).show();
+                } else {
+                    editText = (EditText) findViewById(R.id.infovalvalue);
+                    editText.setError("Número incorrecte");
 
+                }
+            }
                 break;
+
+
             default:
                 filmData.createFilm("TEST2", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
                 break;

@@ -4,56 +4,32 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link any_view_layout.OnFragmentInteractionListener} interface
+ * {@link FragmentBuscar.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link any_view_layout#newInstance} factory method to
+ * Use the {@link FragmentBuscar#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class any_view_layout extends Fragment {
+public class FragmentBuscar extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private FilmData filmData;
-    private List<Film> values = null;
-    View rootView;
-    RecyclerView rv_any;
-    RecyclerView.Adapter rview_any_adapter;
-    RecyclerView.LayoutManager rview_any_LayoutManager;
+    private String mParam1;
+    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    MyInterface myinterface;
 
-    public void setValues(List<Film> values) {
-        //this.values = values;
-        rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
-        rview_any_adapter = new rview_any_adapter(this.values,getActivity());
-        rv_any.setHasFixedSize(true);
-        rview_any_LayoutManager = new LinearLayoutManager(getActivity());
-        rv_any.setAdapter(rview_any_adapter);
-        rv_any.setLayoutManager(rview_any_LayoutManager);
-        rview_any_adapter.notifyDataSetChanged();
-    }
-
-    public interface MyInterface{
-        public void rview_itemSelected(int Position);
-    }
-
-    public any_view_layout() {
+    public FragmentBuscar() {
         // Required empty public constructor
     }
 
@@ -63,11 +39,11 @@ public class any_view_layout extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment any_view_layout.
+     * @return A new instance of fragment FragmentBuscar.
      */
     // TODO: Rename and change types and number of parameters
-    public static any_view_layout newInstance(String param1, String param2) {
-        any_view_layout fragment = new any_view_layout();
+    public static FragmentBuscar newInstance(String param1, String param2) {
+        FragmentBuscar fragment = new FragmentBuscar();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -79,6 +55,8 @@ public class any_view_layout extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -86,34 +64,14 @@ public class any_view_layout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_any_view_layout, container, false);
-
-        filmData = new FilmData(getActivity());
-        filmData.open();
-        rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
-        values = filmData.getAllFilmsOrderedbyAny();
-        rview_any_adapter = new rview_any_adapter(values,getActivity());
-        rv_any.setHasFixedSize(true);
-        rview_any_LayoutManager = new LinearLayoutManager(getActivity());
-        rv_any.setAdapter(rview_any_adapter);
-        rv_any.setLayoutManager(rview_any_LayoutManager);
-        rview_any_adapter.notifyDataSetChanged();
-        return rootView;
+        return inflater.inflate(R.layout.fragment_fragment_buscar, container, false);
     }
-
-    public void setFilter(List<Film> newList){
-
-        List<Film> list = null;
-        list.addAll(newList);
-        rview_any_adapter.notifyDataSetChanged();
-
-
-
-    }
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     @Override
@@ -138,11 +96,13 @@ public class any_view_layout extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        void onFragmentInteraction(Uri uri);
     }
 }
