@@ -30,7 +30,6 @@ public class any_view_layout extends Fragment {
     // TODO: Rename and change types of parameters
     private FilmData filmData;
     private List<Film> values = null;
-    View rootView;
     RecyclerView rv_any;
     RecyclerView.Adapter rview_any_adapter;
     RecyclerView.LayoutManager rview_any_LayoutManager;
@@ -40,12 +39,7 @@ public class any_view_layout extends Fragment {
 
     public void setValues(List<Film> values) {
         //this.values = values;
-        rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
-        rview_any_adapter = new rview_any_adapter(this.values,getActivity());
-        rv_any.setHasFixedSize(true);
-        rview_any_LayoutManager = new LinearLayoutManager(getActivity());
-        rv_any.setAdapter(rview_any_adapter);
-        rv_any.setLayoutManager(rview_any_LayoutManager);
+        rview_any_adapter = new rview_any_adapter(values,getActivity());
         rview_any_adapter.notifyDataSetChanged();
     }
 
@@ -86,7 +80,7 @@ public class any_view_layout extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_any_view_layout, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_any_view_layout, container, false);
 
         filmData = new FilmData(getActivity());
         filmData.open();

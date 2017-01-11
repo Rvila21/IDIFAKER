@@ -32,6 +32,7 @@ public class DesplegableActivity extends AppCompatActivity
         rview_any_adapter.rviewHolder_any.interface2, Fragment_Item_Info.OnFragmentInteractionListener,FragmentBuscar.OnFragmentInteractionListener{
 
     private FilmData filmData;
+    private List<Film> values;
     ListView lista = null;
     ListView actorList = null;
     RecyclerView rv_any;
@@ -42,6 +43,7 @@ public class DesplegableActivity extends AppCompatActivity
     ArrayAdapter<String> adapter3;
     ArrayAdapter<String> adapter4;
     Fragment fragment;
+    Fragment_Item_Info fragmentinfo;
     Film filminfo;
     boolean recycle = false;
 
@@ -51,7 +53,7 @@ public class DesplegableActivity extends AppCompatActivity
     String[] Tx_directors = {"Denis Villeneuve", "Mel Gibbson", "Marc Webb", "Marc Webb", "Francis Ford Coppola", "Francis Ford Coppola", "Francis Ford Coppola"};
     int[] int_anys = {2016, 2016, 2012, 2014, 1972, 1974, 1990};
     String[] Tx_protagonista = {"Amy Adams", "Andrew Garfield", "Andrew Garfield", "Andrew Garfield", "Marlon Brando", "Marlon Brando", "Al Pacino"};
-    int[] int_val = {8, 7, 6, 5, 10, 8, 7};
+    int[] int_val = {8, 7, 6, 5, 9, 8, 7};
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -80,9 +82,8 @@ public class DesplegableActivity extends AppCompatActivity
         lista = (ListView)findViewById(R.id.listView_Lista);
         actorList = (ListView)findViewById(R.id.listViewActor);
         if(R.id.anyrviewid != 0)cleanDB();
-        //showList();
         showFilms();
-        //rv_any.setVisibility(View.GONE);
+        values = filmData.getAllFilmsOrderedbyAny();
 
     }
 
@@ -225,7 +226,7 @@ public class DesplegableActivity extends AppCompatActivity
                     }
 
                     if(aux != null){
-                        List<Film>fakeraux = aux;
+                        List<Film>fakeraux = filmData.getAllFilms();
                         any_view_layout fragmentaux = new any_view_layout();
                         fragmentaux.setValues(fakeraux);
                         getSupportFragmentManager().beginTransaction()
@@ -366,65 +367,48 @@ public class DesplegableActivity extends AppCompatActivity
                 break;
 
             case (R.id.infodelbutton):
-                //get film + film delete
+                Film filmdel = fragmentinfo.getFilm();
+                filmData.deleteFilm(filmdel);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragment).commit();
                 Log.d("ola", "QUE BUENA ESTA LA RUBIA DE XC");
-                toast.makeText(getApplicationContext(), "S'ha esborrat correctament", Toast.LENGTH_LONG).show();
+                toast.makeText(getApplicationContext(), "S'ha esborrat correctament " + filmdel.getTitle(), Toast.LENGTH_LONG).show();
                 break;
 
             case (R.id.infovalbutton):
-                //getfilm + val modify
                 EditText et = (EditText)findViewById(R.id.infovalvalue);
                 String newValString = et.getText().toString();
                 if(newValString.length()==0)et.setError("El camp no pot ser buit.");
                 else{
                 Integer newVal = Integer.parseInt(newValString);
-                if (newVal >= 0 && 10 >= newVal) {
-                    TextView textView = (TextView) findViewById(R.id.infotitol);
-                    String titulo = textView.getText().toString();
-                    List<Film> films = filmData.getAllFilms();
-                    Film choosenone = null;
-                    Film aux;
-                    for (Film film : films) {
-                         name = film.getTitle();
-                        if (titulo.equals(name)) {
-                            choosenone = film;
-                        }
-                    }
-                    aux = choosenone;
-                    if (choosenone != null) choosenone.setCritics_rate(newVal);
-                    textView = (TextView) findViewById(R.id.infovaloracio);
-                    textView.setText(Integer.toString(newVal));
-                    filmData.deleteFilm(aux);
-                    filmData.createFilm(choosenone.getTitle(), choosenone.getDirector(), choosenone.getCountry(), choosenone.getYear(), choosenone.getProtagonist(), choosenone.getCritics_rate());
-                    toast.makeText(getApplicationContext(), "S'ha modificat la valoració correctament", Toast.LENGTH_LONG).show();
-                } else {
-                    editText = (EditText) findViewById(R.id.infovalvalue);
-                    editText.setError("Número incorrecte");
-
+                    if (newVal >= 0 && 9 >= newVal) {
+                        Film film = fragmentinfo.getFilm();
+                        Film aux = film;
+                        if (film != null) film.setCritics_rate(newVal);
+                        fragmentinfo.setValoracio(film);
+                        filmData.deleteFilm(aux);
+                        filmData.createFilm(film.getTitle(), film.getDirector(), film.getCountry(), film.getYear(), film.getProtagonist(), film.getCritics_rate());
+                        toast.makeText(getApplicationContext(), "S'ha modificat la valoració correctament", Toast.LENGTH_LONG).show();
+                    } else {
+                        editText = (EditText) findViewById(R.id.infovalvalue);
+                        editText.setError("Número incorrecte");
                 }
             }
                 break;
 
 
             default:
-                filmData.createFilm("TEST2", "PP", "SUMONERS RIFT", 2016, "Patricio", 10) ;
+                filmData.createFilm("TEST2", "PP", "SUMONERS RIFT", 2016, "Patricio", 9) ;
                 break;
         }
     }
 
     @Override
     public void thisitem(int Position) {
-        List<Film> values = filmData.getAllFilms();
-        Film film = values.get(Position);
-        Fragment_Item_Info fragmentaux = new Fragment_Item_Info();
-        fragmentaux.setTitol(film.getTitle());
-        fragmentaux.setDirector(film.getDirector());
-        fragmentaux.setPais(film.getCountry());
-        fragmentaux.setAny(film.getYear());
-        fragmentaux.setProtagonista(film.getProtagonist());
-        fragmentaux.setValoracio(film.getCritics_rate());
+        Film film = filmData.getAllFilmsOrderedbyAny().get(Position);
+        fragmentinfo = new Fragment_Item_Info();
+        fragmentinfo.setFilm(film);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_desplegable, fragmentaux).commit();
+                .replace(R.id.content_desplegable, fragmentinfo).commit();
         getSupportActionBar().setTitle(film.getTitle());
     }
 }

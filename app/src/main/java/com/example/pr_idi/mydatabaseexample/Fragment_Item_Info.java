@@ -21,23 +21,11 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class Fragment_Item_Info extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_Titol = "Titol";
-    private static final String ARG_Director = "Director";
-    private static final String ARG_Pais = "Pais";
-    private static final String ARG_Any = "Any";
-    private static final String ARG_Protagonista = "Protagonista";
-    private static final String ARG_Valoracio = "Valoracio";
 
-    // TODO: Rename and change types of parameters
-    private String Titol;
-    private String Director;
-    private String Pais;
-    private int Any;
-    private String Protagonista;
-    private int Valoracio;
+
+
     private View rootView;
+    private Film film;
     private FilmData filmData;
 
     private OnFragmentInteractionListener mListener;
@@ -52,17 +40,7 @@ public class Fragment_Item_Info extends Fragment {
      * @return A new instance of fragment Fragment_Item_Info.
      */
     //MÈTODE INÙTIL NOMÉS PER PROVES
-    public static Fragment_Item_Info newInstance(String Titol, String Director, String Pais, int Any, String Protagonista, int Valoracio) {
-        Fragment_Item_Info fragment = new Fragment_Item_Info();
-        Bundle args = new Bundle();
-        args.putString(ARG_Titol, Titol);
-        args.putString(ARG_Director, Director);
-        args.putString(ARG_Pais, Pais);
-        args.putInt(ARG_Any, Any);
-        args.putString(ARG_Protagonista, Protagonista);
-        args.putInt(ARG_Valoracio, Valoracio);
-        fragment.setArguments(args);
-        return fragment;
+    public static void newInstance() {
     }
 
     @Override
@@ -80,17 +58,17 @@ public class Fragment_Item_Info extends Fragment {
         // Inflate the layout for this fragment
         rootView =  inflater.inflate(R.layout.fragment_fragment__specific_info, container, false);
         TextView t = (TextView)rootView.findViewById(R.id.infotitol);
-        t.setText(Titol);
+        t.setText(film.getTitle());
         t = (TextView)rootView.findViewById(R.id.infodirector);
-        t.setText(Director);
+        t.setText(film.getDirector());
         t = (TextView)rootView.findViewById(R.id.infopais);
-        t.setText(Pais);
+        t.setText(film.getCountry());
         t = (TextView)rootView.findViewById(R.id.infoany);
-        t.setText(Integer.toString(Any));
+        t.setText(Integer.toString(film.getYear()));
         t = (TextView)rootView.findViewById(R.id.infoprotagonista);
-        t.setText(Protagonista);
+        t.setText(film.getProtagonist());
         t = (TextView)rootView.findViewById(R.id.infovaloracio);
-        t.setText(Integer.toString(Valoracio));
+        t.setText(Integer.toString(film.getCritics_rate()));
         return rootView;
     }
 
@@ -102,22 +80,12 @@ public class Fragment_Item_Info extends Fragment {
     }
 
     public void change_rate(Integer s){
-        List<Film> films = filmData.getAllFilms();
-        Film choosenone = null;
-        Film aux;
-        for(Film film : films){
-            String name = film.getTitle();
-            if(Titol == name){
-                choosenone = film;
-                break;
-            }
-        }
-        aux = choosenone;
-        choosenone.setCritics_rate(s);
+        Film aux = film;
+        film.setCritics_rate(s);
         TextView t = (TextView)rootView.findViewById(R.id.infovaloracio);
-        t.setText(Integer.toString(choosenone.getCritics_rate()));
+        t.setText(Integer.toString(film.getCritics_rate()));
         filmData.deleteFilm(aux);
-        filmData.createFilm(choosenone.getTitle(),choosenone.getDirector(),choosenone.getCountry(),choosenone.getYear(),choosenone.getProtagonist(),choosenone.getCritics_rate());
+        filmData.createFilm(film.getTitle(),film.getDirector(),film.getCountry(),film.getYear(),film.getProtagonist(),film.getCritics_rate());
 
     }
 
@@ -138,53 +106,22 @@ public class Fragment_Item_Info extends Fragment {
         mListener = null;
     }
 
-    public String getTitol() {
-        return Titol;
+
+
+
+
+    public void setFilm(Film film) {
+        this.film = film;
     }
 
-    public void setTitol(String titol) {
-        Titol = titol;
-
+    public Film getFilm(){
+        return this.film;
     }
 
-    public String getDirector() {
-        return Director;
-    }
-
-    public void setDirector(String director) {
-        Director = director;
-    }
-
-    public String getPais() {
-        return Pais;
-    }
-
-    public void setPais(String pais) {
-        Pais = pais;
-    }
-
-    public int getAny() {
-        return Any;
-    }
-
-    public void setAny(int any) {
-        Any = any;
-    }
-
-    public String getProtagonista() {
-        return Protagonista;
-    }
-
-    public void setProtagonista(String protagonista) {
-        Protagonista = protagonista;
-    }
-
-    public int getValoracio() {
-        return Valoracio;
-    }
-
-    public void setValoracio(int valoracio) {
-        this.Valoracio = valoracio;
+    public void setValoracio(Film film) {
+        this.film = film;
+        TextView t = (TextView)rootView.findViewById(R.id.infovaloracio);
+        t.setText(Integer.toString(film.getCritics_rate()));
     }
 
     /**
