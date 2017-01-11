@@ -12,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -92,6 +91,11 @@ public class DesplegableActivity extends AppCompatActivity
 
     }
 
+    private void clickActor(){
+
+
+    }
+
     private void cleanDB(){
         //Db stuff
         filmData = new FilmData(this);
@@ -121,14 +125,17 @@ public class DesplegableActivity extends AppCompatActivity
         actorList = (ListView)findViewById(R.id.listViewActor);
         List<Film> values = filmData.getAllFilms();
         ArrayList<String> aux = new ArrayList<>();
+        boolean vacio = true;
         for(Film film : values){
             String prota = film.getProtagonist();
             if(prota.contains(name)){
                 aux.add(film.getTitle());
-                Log.d("ola","YEP");
+                vacio = false;
             }
 
         }
+        Toast toast = new Toast(getApplicationContext());
+        if(vacio)toast.makeText(getApplicationContext(),"No s'han trobat resultats",Toast.LENGTH_LONG).show();
         List<String> auxActor = aux;
         adapter4 = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, auxActor);
@@ -394,10 +401,9 @@ public class DesplegableActivity extends AppCompatActivity
         final Toast toast = new Toast(getApplicationContext());
         switch(view.getId()) {
             case (R.id.actButton):
-                Log.d("ola","he jgaksghaok");
                 EditText editText = (EditText)findViewById(R.id.editTextActor);
                 String name = editText.getText().toString();
-                if(name!="") showListActor(name);
+                if(name.length()!= 0) showListActor(name);
                 else editText.setError("El camp no pot ser buit.");
 
                 break;
@@ -492,6 +498,7 @@ public class DesplegableActivity extends AppCompatActivity
                 .replace(R.id.content_desplegable, fragmentinfo).commit();
         getSupportActionBar().setTitle(film.getTitle());
     }
+
 }
 
 

@@ -95,15 +95,6 @@ public class any_view_layout extends Fragment {
         return rootView;
     }
 
-    public void setFilter(List<Film> newList){
-
-        List<Film> list = null;
-        list.addAll(newList);
-        rview_any_adapter.notifyDataSetChanged();
-
-
-
-    }
 
 
     // TODO: Rename method, update argument and hook method into UI event

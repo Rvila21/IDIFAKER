@@ -84,7 +84,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:text="Desplegar el menú, seleccionar l&apos;opció &quot;Year&quot; escollir "
+                android:text="Desplegar menú, seleccionar l&apos;opció "
                 android:id="@+id/textView6"
                 android:layout_column="0" />
         </TableRow>
@@ -96,7 +96,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="la pelicula a esborrar premer sobre ella ens enviará a un altre"
+                android:text="&quot;Pel·lícules per any&quot; triar  la pelicula a esborrar"
+                android:id="@+id/textView22"
+                android:layout_column="0" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" premer sobre ella ens enviará a un altre"
                 android:id="@+id/textView15"
                 android:layout_column="0" />
         </TableRow>
@@ -144,7 +156,7 @@
             <TextView
                 android:id="@+id/textView8"
                 android:layout_column="0"
-                android:text="Desplegar el menú, seleccionar l&apos;opció &quot;Year&quot; escollir " />
+                android:text="Desplegar menú, seleccionar l&apos;opció " />
         </TableRow>
 
         <TableRow
@@ -154,7 +166,19 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="la pelicula a esborrar premer sobre ella ens enviará a un altre "
+                android:text="&quot;Pel·lícules per any&quot; triar la pelicula a esborrar"
+                android:id="@+id/textView26"
+                android:layout_column="0" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" premer sobre ella ens enviará a un altre "
                 android:id="@+id/textView18"
                 android:layout_column="0" />
         </TableRow>
@@ -290,7 +314,7 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:text="Desplegar el menú seleccionar l&apos;opció &quot;Year&quot; "
+                android:text="Desplegar el menú seleccionar l&apos;opció "
                 android:id="@+id/textView12"
                 android:layout_column="0" />
         </TableRow>
@@ -300,7 +324,19 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:text="i premer sobre el nom de la película la qual es vol "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&quot;Pel·lícules per any&quot;  i premer sobre"
+                android:id="@+id/textView27"
+                android:layout_column="0" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:text=" el nom de la película la qual es vol "
                 android:id="@+id/textView24"
                 android:layout_column="0" />
         </TableRow>
