@@ -1,5 +1,6 @@
 package com.example.pr_idi.mydatabaseexample;
 
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -7,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -386,7 +388,7 @@ public class DesplegableActivity extends AppCompatActivity
 
 
     public void onClick(View view){
-        Toast toast = new Toast(getApplicationContext());
+        final Toast toast = new Toast(getApplicationContext());
         switch(view.getId()) {
             case (R.id.actButton):
                 Log.d("ola","he jgaksghaok");
@@ -411,10 +413,26 @@ public class DesplegableActivity extends AppCompatActivity
                 break;
 
             case (R.id.infodelbutton):
-                Film filmdel = fragmentinfo.getFilm();
-                filmData.deleteFilm(filmdel);
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragment).commit();
-                toast.makeText(getApplicationContext(), "S'ha esborrat correctament " + filmdel.getTitle(), Toast.LENGTH_LONG).show();
+                final Film filmdel = fragmentinfo.getFilm();
+                new AlertDialog.Builder(this)
+                        .setTitle("ESBORRAR")
+                        .setMessage("Segur que vols esborrar " +filmdel.getTitle() + " ?")
+                        .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                filmData.deleteFilm(filmdel);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragment).commit();
+                                toast.makeText(getApplicationContext(), "S'ha esborrat correctament " + filmdel.getTitle(), Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel·la", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // do nothing
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
                 break;
 
             case (R.id.infovalbutton):
