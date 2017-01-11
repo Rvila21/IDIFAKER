@@ -14,11 +14,11 @@
                 android:textColor="@color/textPrimary"
                 android:id="@+id/aenunciat"
                 android:gravity="center"
-                android:text="Afegir Pelicula"
+                android:text="Afegir Pel·lícula"
                 android:textSize="35dp"
                 android:textStyle="bold"/>
             <Button
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="5dp"
