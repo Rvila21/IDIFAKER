@@ -38,7 +38,7 @@ public class any_view_layout extends Fragment {
     MyInterface myinterface;
 
     public void setValues(List<Film> values) {
-        //this.values = values;
+        this.values = values;
         rview_any_adapter = new rview_any_adapter(values,getActivity());
         rview_any_adapter.notifyDataSetChanged();
     }
@@ -85,7 +85,7 @@ public class any_view_layout extends Fragment {
         filmData = new FilmData(getActivity());
         filmData.open();
         rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
-        values = filmData.getAllFilmsOrderedbyAny();
+        if(this.values == null) values = filmData.getAllFilmsOrderedbyAny();
         rview_any_adapter = new rview_any_adapter(values,getActivity());
         rv_any.setHasFixedSize(true);
         rview_any_LayoutManager = new LinearLayoutManager(getActivity());

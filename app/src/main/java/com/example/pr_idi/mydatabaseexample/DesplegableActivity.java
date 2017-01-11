@@ -46,6 +46,7 @@ public class DesplegableActivity extends AppCompatActivity
     ArrayAdapter<String> adapter4;
     Fragment fragment;
     Fragment_Item_Info fragmentinfo;
+    any_view_layout fragmentrview;
     Film filminfo;
     Stack<String> fragmentos = new Stack<>();
     String fragmentoActual = "main";
@@ -199,9 +200,9 @@ public class DesplegableActivity extends AppCompatActivity
 
         }
         else if(fragmentoActual == "recycle"){
-            fragment = new any_view_layout();
+            fragmentrview = new any_view_layout();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_desplegable, fragment).commit();
+                    .replace(R.id.content_desplegable, fragmentrview).commit();
         }
         else if(fragmentoActual == "afegir"){
             fragment = new FragmentAfegir();
@@ -247,20 +248,11 @@ public class DesplegableActivity extends AppCompatActivity
                     String name = film.getProtagonist();
                     if(name.contains(newText)){
                         aux.add(film);
-
                     }
-
                     if(aux != null){
-                        List<Film>fakeraux = filmData.getAllFilms();
-                        any_view_layout fragmentaux = new any_view_layout();
-                        fragmentaux.setValues(fakeraux);
-                        getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.content_desplegable, fragmentaux).commit();
-                        getSupportActionBar().setTitle(film.getTitle());
+                        fragmentrview.setValues(aux);
                     }
-
                 }
-
                 }
                 return false;
 
@@ -309,7 +301,7 @@ public class DesplegableActivity extends AppCompatActivity
             MainView = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.VISIBLE);
-            fragment = new any_view_layout();
+            fragmentrview = new any_view_layout();
             FragTransaction = true;
             recycle = true;
             fragmentoActual = fragmentos.lastElement();
@@ -319,6 +311,7 @@ public class DesplegableActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_slideshow) {
             MainView = false;
+            recycle = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.GONE);
             fragment = new FragmentAfegir();
@@ -327,6 +320,7 @@ public class DesplegableActivity extends AppCompatActivity
             fragmentos.add("afegir");
         } else if (id == R.id.nav_manage) {
             MainView = false;
+            recycle = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.GONE);
             FragTransaction = true;
@@ -335,12 +329,14 @@ public class DesplegableActivity extends AppCompatActivity
             fragmentos.add("buscar");
         } else if (id == R.id.nav_share) {
             MainView = false;
+            recycle = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.GONE);
             fragment = new FragmentHelp();
             FragTransaction = true;
         } else if (id == R.id.nav_send) {
             MainView = false;
+            recycle = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.GONE);
             fragment = new FragmentAbout();
@@ -349,12 +345,19 @@ public class DesplegableActivity extends AppCompatActivity
         }
 
         if (FragTransaction) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_desplegable, fragment).commit();
-            item.setChecked(true);
-            getSupportActionBar().setTitle(item.getTitle());
+            if(recycle){
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_desplegable, fragmentrview).commit();
+                item.setChecked(true);
+                getSupportActionBar().setTitle(item.getTitle());
 
-
+            }
+            else {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.content_desplegable, fragment).commit();
+                item.setChecked(true);
+                getSupportActionBar().setTitle(item.getTitle());
+            }
         }
 
         if (MainView) {
@@ -421,7 +424,15 @@ public class DesplegableActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which) {
 
                                 filmData.deleteFilm(filmdel);
-                                getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragment).commit();
+                                List<Film> auxiliar = new ArrayList<>();
+                                Film f = filmData.createFilm("TEST2", "PP", "SUMONERS RIFT", 2016, "Patricio", 9) ;
+                                auxiliar.add(f);
+                                f = filmData.createFilm("TEST3", "PP", "SUMONERS RIFT", 2016, "Patricio", 9) ;
+                                auxiliar.add(f);
+                                f = filmData.createFilm("TEST4", "PP", "SUMONERS RIFT", 2016, "Patricio", 9);
+                                auxiliar.add(f);
+                                fragmentrview.setValues(auxiliar);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragmentrview).commit();
                                 toast.makeText(getApplicationContext(), "S'ha esborrat correctament " + filmdel.getTitle(), Toast.LENGTH_LONG).show();
                             }
                         })
@@ -432,6 +443,9 @@ public class DesplegableActivity extends AppCompatActivity
                         })
                         .setIcon(android.R.drawable.ic_dialog_alert)
                         .show();
+
+
+
 
                 break;
 
@@ -463,7 +477,6 @@ public class DesplegableActivity extends AppCompatActivity
 
 
             default:
-                filmData.createFilm("TEST2", "PP", "SUMONERS RIFT", 2016, "Patricio", 9) ;
                 break;
         }
     }
