@@ -33,12 +33,9 @@ public class DesplegableActivity extends AppCompatActivity
         rview_any_adapter.rviewHolder_any.interface2, Fragment_Item_Info.OnFragmentInteractionListener,FragmentBuscar.OnFragmentInteractionListener{
 
     private FilmData filmData;
-    private List<Film> values;
+    private List<Film> rview_values;
     ListView lista = null;
     ListView actorList = null;
-    RecyclerView rv_any;
-    RecyclerView.Adapter rview_any_adapter;
-    RecyclerView.LayoutManager rview_any_LayoutManager;
     SearchView searchView = null;
     ArrayAdapter<String> adapter2;
     ArrayAdapter<String> adapter3;
@@ -87,7 +84,7 @@ public class DesplegableActivity extends AppCompatActivity
         if(R.id.anyrviewid != 0)cleanDB();
         fragmentos.add("main");
         showFilms();
-        values = filmData.getAllFilmsOrderedbyAny();
+        rview_values = filmData.getAllFilmsOrderedbyAny();
 
     }
 
@@ -232,7 +229,7 @@ public class DesplegableActivity extends AppCompatActivity
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
         MenuItem item = menu.findItem(R.id.menuSearch);
-        searchView = (SearchView) item.getActionView();
+        searchView = (SearchView)item.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -241,7 +238,6 @@ public class DesplegableActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
                 if(!recycle) {
                     List<String> valuesfilter = filmData.getStudentListByKeyword(newText);
                     if (valuesfilter != null) setListView(valuesfilter);
@@ -249,17 +245,21 @@ public class DesplegableActivity extends AppCompatActivity
                     return false;
                 }
                 if(recycle){
-                List<Film> films = filmData.getAllFilms();
+                rview_values = filmData.getAllFilms();
                 ArrayList<Film> aux = new ArrayList<Film>();
-                for(Film film : films){
+                for(Film film : rview_values) {
                     String name = film.getProtagonist();
-                    if(name.contains(newText)){
+                    if (name.contains(newText)) {
+
                         aux.add(film);
                     }
-                    if(aux != null){
-                        fragmentrview.setValues(aux);
-                    }
                 }
+                    if(aux != null){
+                        rview_values = aux;
+                        fragmentrview = new any_view_layout();
+                        fragmentrview.setValues(rview_values);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragmentrview).commit();
+                    }
                 }
                 return false;
 
@@ -353,6 +353,8 @@ public class DesplegableActivity extends AppCompatActivity
 
         if (FragTransaction) {
             if(recycle){
+                rview_values = filmData.getAllFilmsOrderedbyAny();
+                fragmentrview.setValues(rview_values);
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.content_desplegable, fragmentrview).commit();
                 item.setChecked(true);
@@ -428,16 +430,9 @@ public class DesplegableActivity extends AppCompatActivity
                         .setMessage("Segur que vols esborrar " +filmdel.getTitle() + " ?")
                         .setPositiveButton("Si", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
                                 filmData.deleteFilm(filmdel);
-                                List<Film> auxiliar = new ArrayList<>();
-                                Film f = filmData.createFilm("TEST2", "PP", "SUMONERS RIFT", 2016, "Patricio", 9) ;
-                                auxiliar.add(f);
-                                f = filmData.createFilm("TEST3", "PP", "SUMONERS RIFT", 2016, "Patricio", 9) ;
-                                auxiliar.add(f);
-                                f = filmData.createFilm("TEST4", "PP", "SUMONERS RIFT", 2016, "Patricio", 9);
-                                auxiliar.add(f);
-                                fragmentrview.setValues(auxiliar);
+                                rview_values = filmData.getAllFilmsOrderedbyAny();
+                                fragmentrview.setValues(rview_values);
                                 getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragmentrview).commit();
                                 toast.makeText(getApplicationContext(), "S'ha esborrat correctament " + filmdel.getTitle(), Toast.LENGTH_LONG).show();
                             }
