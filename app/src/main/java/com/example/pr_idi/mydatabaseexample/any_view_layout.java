@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,6 +39,7 @@ public class any_view_layout extends Fragment {
     MyInterface myinterface;
 
     public void setValues(List<Film> values) {
+        this.values = new ArrayList<>();
         this.values = values;
         rview_any_adapter = new rview_any_adapter(values,getActivity());
         rview_any_adapter.notifyDataSetChanged();
@@ -82,8 +84,6 @@ public class any_view_layout extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_any_view_layout, container, false);
 
-        filmData = new FilmData(getActivity());
-        filmData.open();
         rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
         if(this.values == null) values = filmData.getAllFilmsOrderedbyAny();
         rview_any_adapter = new rview_any_adapter(values,getActivity());
