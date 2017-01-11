@@ -204,22 +204,27 @@ public class DesplegableActivity extends AppCompatActivity
             searchView.setVisibility(View.VISIBLE);
             fragment = new FragmentCercaCamera();
             getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragment).commit();
+            getSupportActionBar().setTitle("FilmsManager");
 
         }
         else if(fragmentoActual == "recycle"){
             fragmentrview = new any_view_layout();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_desplegable, fragmentrview).commit();
+            getSupportActionBar().setTitle("Pel·lícules per any");
         }
         else if(fragmentoActual == "afegir"){
             fragment = new FragmentAfegir();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_desplegable, fragment).commit();
+            getSupportActionBar().setTitle("Afegir Pel·lícula");
         }
         else if(fragmentoActual == "buscar"){
             fragment = new FragmentBuscar();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_desplegable, fragment).commit();
+            getSupportActionBar().setTitle("Filtrar per protagonista");
+
 
         }else {
             super.onBackPressed();
