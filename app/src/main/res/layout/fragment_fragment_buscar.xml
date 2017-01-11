@@ -42,8 +42,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Buscar"
-            android:id="@+id/actbutton"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/actButton"
+            android:layout_gravity="center_horizontal"
+            android:onClick="onClick"/>
 
         <ListView
             android:layout_width="match_parent"

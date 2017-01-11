@@ -19,12 +19,12 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 public class DesplegableActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FragmentCercaCamera.OnFragmentInteractionListener
@@ -45,6 +45,8 @@ public class DesplegableActivity extends AppCompatActivity
     Fragment fragment;
     Fragment_Item_Info fragmentinfo;
     Film filminfo;
+    Stack<String> fragmentos = new Stack<>();
+    String fragmentoActual = "main";
     boolean recycle = false;
 
     //pelicules de mostra
@@ -80,8 +82,8 @@ public class DesplegableActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         lista = (ListView)findViewById(R.id.listView_Lista);
-        actorList = (ListView)findViewById(R.id.listViewActor);
         if(R.id.anyrviewid != 0)cleanDB();
+        fragmentos.add("main");
         showFilms();
         values = filmData.getAllFilmsOrderedbyAny();
 
@@ -113,11 +115,12 @@ public class DesplegableActivity extends AppCompatActivity
 
         filmData = new FilmData(this);
         filmData.open();
+        actorList = (ListView)findViewById(R.id.listViewActor);
         List<Film> values = filmData.getAllFilms();
         ArrayList<String> aux = new ArrayList<>();
         for(Film film : values){
             String prota = film.getProtagonist();
-            if(prota.equals(name)){
+            if(prota.contains(name)){
                 aux.add(film.getTitle());
                 Log.d("ola","YEP");
             }
@@ -129,7 +132,6 @@ public class DesplegableActivity extends AppCompatActivity
         actorList.setAdapter(adapter4);
         actorList.setAdapter(adapter4);
         adapter4.notifyDataSetChanged();
-        Log.d("ola","MACARROOOOOOONES");
 
     }
 
@@ -183,12 +185,33 @@ public class DesplegableActivity extends AppCompatActivity
     }
 
 
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
+        if(fragmentoActual == "main"){
+            showFilms();
+            lista.setVisibility(View.VISIBLE);
+            searchView.setVisibility(View.VISIBLE);
+            fragment = new FragmentCercaCamera();
+            getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragment).commit();
+
+        }
+        else if(fragmentoActual == "recycle"){
+            fragment = new any_view_layout();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_desplegable, fragment).commit();
+        }
+        else if(fragmentoActual == "afegir"){
+            fragment = new FragmentAfegir();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_desplegable, fragment).commit();
+        }
+        else if(fragmentoActual == "buscar"){
+            fragment = new FragmentBuscar();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_desplegable, fragment).commit();
+
+        }else {
             super.onBackPressed();
         }
     }
@@ -277,6 +300,8 @@ public class DesplegableActivity extends AppCompatActivity
             showFilms();
             lista.setVisibility(View.VISIBLE);
             searchView.setVisibility(View.VISIBLE);
+            fragmentoActual = fragmentos.firstElement();
+            fragmentos.add("main");
             recycle = false;
         } else if (id == R.id.nav_gallery) {
             MainView = false;
@@ -285,6 +310,8 @@ public class DesplegableActivity extends AppCompatActivity
             fragment = new any_view_layout();
             FragTransaction = true;
             recycle = true;
+            fragmentoActual = fragmentos.lastElement();
+            fragmentos.add("recycle");
             //showList();
 
 
@@ -294,12 +321,16 @@ public class DesplegableActivity extends AppCompatActivity
             searchView.setVisibility(View.GONE);
             fragment = new FragmentAfegir();
             FragTransaction = true;
+            fragmentoActual = fragmentos.lastElement();
+            fragmentos.add("afegir");
         } else if (id == R.id.nav_manage) {
             MainView = false;
             lista.setVisibility(View.GONE);
             searchView.setVisibility(View.GONE);
             FragTransaction = true;
             fragment = new FragmentBuscar();
+            fragmentoActual = fragmentos.lastElement();
+            fragmentos.add("buscar");
         } else if (id == R.id.nav_share) {
             MainView = false;
             lista.setVisibility(View.GONE);
@@ -341,11 +372,23 @@ public class DesplegableActivity extends AppCompatActivity
 
     }
 
+    public static Boolean isValidInteger(String value) {
+        try {
+            Integer val = Integer.valueOf(value);
+            if (val != null)
+                return true;
+            else
+                return false;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
 
     public void onClick(View view){
         Toast toast = new Toast(getApplicationContext());
         switch(view.getId()) {
-            case (R.id.actbutton):
+            case (R.id.actButton):
                 Log.d("ola","he jgaksghaok");
                 EditText editText = (EditText)findViewById(R.id.editTextActor);
                 String name = editText.getText().toString();
@@ -364,13 +407,13 @@ public class DesplegableActivity extends AppCompatActivity
                 filmData.createFilm(auxTitol, auxDirector, auxPais, Integer.parseInt(auxAny), auxProtagonista, Integer.parseInt(auxCrate));
                 adapter2.add(auxTitol);
                 adapter2.notifyDataSetChanged();
+                toast.makeText(getApplicationContext(),"S'ha afegit l'element correctament",Toast.LENGTH_LONG).show();
                 break;
 
             case (R.id.infodelbutton):
                 Film filmdel = fragmentinfo.getFilm();
                 filmData.deleteFilm(filmdel);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_desplegable, fragment).commit();
-                Log.d("ola", "QUE BUENA ESTA LA RUBIA DE XC");
                 toast.makeText(getApplicationContext(), "S'ha esborrat correctament " + filmdel.getTitle(), Toast.LENGTH_LONG).show();
                 break;
 
@@ -379,8 +422,13 @@ public class DesplegableActivity extends AppCompatActivity
                 String newValString = et.getText().toString();
                 if(newValString.length()==0)et.setError("El camp no pot ser buit.");
                 else{
-                Integer newVal = Integer.parseInt(newValString);
-                    if (newVal >= 0 && 9 >= newVal) {
+                    boolean valid = isValidInteger(newValString);
+                    if(!valid){
+                        et.setError("Ha de ser un número.");
+                        break;
+                    }
+                    Integer newVal = Integer.parseInt(newValString);
+                    if (newVal >= 0 && 10 >= newVal) {
                         Film film = fragmentinfo.getFilm();
                         Film aux = film;
                         if (film != null) film.setCritics_rate(newVal);
@@ -407,6 +455,8 @@ public class DesplegableActivity extends AppCompatActivity
         Film film = filmData.getAllFilmsOrderedbyAny().get(Position);
         fragmentinfo = new Fragment_Item_Info();
         fragmentinfo.setFilm(film);
+        fragmentoActual = fragmentos.lastElement();
+        fragmentos.add("info");
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.content_desplegable, fragmentinfo).commit();
         getSupportActionBar().setTitle(film.getTitle());
