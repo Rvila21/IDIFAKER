@@ -197,6 +197,7 @@ public class DesplegableActivity extends AppCompatActivity
     public void onBackPressed() {
         if(fragmentoActual == "main"){
             showFilms();
+            recycle = false;
             lista.setVisibility(View.VISIBLE);
             searchView.setVisibility(View.VISIBLE);
             fragment = new FragmentCercaCamera();
@@ -206,17 +207,21 @@ public class DesplegableActivity extends AppCompatActivity
         }
         else if(fragmentoActual == "recycle"){
             fragmentrview = new any_view_layout();
+            recycle = true;
+            fragmentrview.setValues(rview_values);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_desplegable, fragmentrview).commit();
             getSupportActionBar().setTitle("Pel·lícules per any");
         }
         else if(fragmentoActual == "afegir"){
+            recycle = false;
             fragment = new FragmentAfegir();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_desplegable, fragment).commit();
             getSupportActionBar().setTitle("Afegir Pel·lícula");
         }
         else if(fragmentoActual == "buscar"){
+            recycle = false;
             fragment = new FragmentBuscar();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.content_desplegable, fragment).commit();

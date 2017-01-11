@@ -83,7 +83,7 @@ public class any_view_layout extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_any_view_layout, container, false);
-
+        //filmData.open();
         rv_any = (RecyclerView)rootView.findViewById(R.id.anyrviewid);
         if(this.values == null) values = filmData.getAllFilmsOrderedbyAny();
         rview_any_adapter = new rview_any_adapter(values,getActivity());
