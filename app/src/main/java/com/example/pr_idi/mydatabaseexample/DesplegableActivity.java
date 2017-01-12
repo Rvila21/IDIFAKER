@@ -101,16 +101,21 @@ public class DesplegableActivity extends AppCompatActivity
         //setContentView(R.layout.fragment_any_view_layout);
         List<Film> values = filmData.getAllFilms();
 
-        while(values.size()>0){
+
+        //neteja de la base de dades, descomentar per a que es s'executi en iniciar l'aplicació
+        /*while(values.size()>0){
             Film del = values.get(0);
             filmData.deleteFilm(del);
             values.remove(0);
-        }
-        //Neteja simple de la base de dades
+        }*/
 
-        for(int i = 0; i < 7;++i){
-            Film film = filmData.createFilm(Tx_titols[i],Tx_directors[i],Tx_paisos[i],int_anys[i],Tx_protagonista[i],int_val[i]);
-            values.add(film);
+
+        //Introducció de valors base amb repetició de protagnista, titols semblants i més d'una pelicula del mateix any
+        if(values == null) {
+            for (int i = 0; i < 7; ++i) {
+                Film film = filmData.createFilm(Tx_titols[i], Tx_directors[i], Tx_paisos[i], int_anys[i], Tx_protagonista[i], int_val[i]);
+                values.add(film);
+            }
         }
 
     }
@@ -258,7 +263,7 @@ public class DesplegableActivity extends AppCompatActivity
                 rview_values = filmData.getAllFilms();
                 ArrayList<Film> aux = new ArrayList<Film>();
                 for(Film film : rview_values) {
-                    String name = film.getProtagonist();
+                    String name = film.getTitle();
                     if (name.contains(newText)) {
 
                         aux.add(film);
@@ -421,16 +426,63 @@ public class DesplegableActivity extends AppCompatActivity
                 break;
 
             case (R.id.aButton):
-                String auxTitol = ((EditText) findViewById(R.id.aedTitol)).getText().toString();
-                String auxDirector = ((EditText) findViewById(R.id.aedDirector)).getText().toString();
-                String auxPais = ((EditText) findViewById(R.id.aedPais)).getText().toString();
-                String auxAny = ((EditText) findViewById(R.id.aedAny)).getText().toString();
-                String auxProtagonista = ((EditText) findViewById(R.id.aedProtagonista)).getText().toString();
-                String auxCrate = ((EditText) findViewById(R.id.aedCrate)).getText().toString();
-                filmData.createFilm(auxTitol, auxDirector, auxPais, Integer.parseInt(auxAny), auxProtagonista, Integer.parseInt(auxCrate));
-                adapter2.add(auxTitol);
-                adapter2.notifyDataSetChanged();
-                toast.makeText(getApplicationContext(),"S'ha afegit l'element correctament",Toast.LENGTH_LONG).show();
+                EditText eted = ((EditText) findViewById(R.id.aedTitol));
+                String auxTitol = eted.getText().toString();
+                if(auxTitol.length()==0){
+                    eted.setError("El camp Titol no pot ser buit.");
+                    toast.makeText(getApplicationContext(),"ERROR AL AFEGIR",Toast.LENGTH_LONG).show();
+                    break;
+                }
+                eted = ((EditText) findViewById(R.id.aedDirector));
+                String auxDirector = eted.getText().toString();
+                if(auxDirector.length()==0){
+                    eted.setError("El camp Director no pot ser buit.");
+                    toast.makeText(getApplicationContext(),"ERROR AL AFEGIR",Toast.LENGTH_LONG).show();
+                    break;
+                }
+                eted = ((EditText) findViewById(R.id.aedPais));
+                String auxPais = eted.getText().toString();
+                if(auxPais.length()==0){
+                    eted.setError("El camp Pais no pot ser buit.");
+                    toast.makeText(getApplicationContext(),"ERROR AL AFEGIR",Toast.LENGTH_LONG).show();
+                    break;
+                }
+                EditText eteda = ((EditText) findViewById(R.id.aedAny));
+                String auxAny = eteda.getText().toString();
+                if(auxAny.length()==0){
+                    eteda.setError("El camp Any no pot ser buit.");
+                    toast.makeText(getApplicationContext(),"ERROR AL AFEGIR",Toast.LENGTH_LONG).show();
+                    break;
+                }
+                eted = ((EditText) findViewById(R.id.aedProtagonista));
+                String auxProtagonista = eted.getText().toString();
+                if(auxProtagonista.length()==0){
+                    eted.setError("El camp Protagonista no pot ser buit.");
+                    toast.makeText(getApplicationContext(),"ERROR AL AFEGIR",Toast.LENGTH_LONG).show();
+                    break;
+                }
+                eted = ((EditText) findViewById(R.id.aedCrate));
+                String auxCrate = eted.getText().toString();
+                if (Integer.parseInt(auxCrate) < 0 || 9 < Integer.parseInt(auxCrate)){
+                    eted.setError("El camp Valoració ha d'estar entre 0 i 9");
+                    toast.makeText(getApplicationContext(),"ERROR AL AFEGIR",Toast.LENGTH_LONG).show();
+                    break;
+                }
+                if(auxCrate.length()==0){
+                    eted.setError("El camp Valoració no pot ser buit.");
+                    toast.makeText(getApplicationContext(),"ERROR AL AFEGIR",Toast.LENGTH_LONG).show();
+                    break;
+                }
+                try {
+                    filmData.createFilm(auxTitol, auxDirector, auxPais, Integer.parseInt(auxAny), auxProtagonista, Integer.parseInt(auxCrate));
+                    adapter2.add(auxTitol);
+                    adapter2.notifyDataSetChanged();
+                    toast.makeText(getApplicationContext(),"S'ha afegit l'element correctament",Toast.LENGTH_LONG).show();
+                }catch (IllegalStateException e){
+                    eteda.setError("Valoració o Any no son un nombre");
+                    eted.setError("Valoració o Any no son un nombre");
+                    toast.makeText(getApplicationContext(),"ERROR AL AFEGIR",Toast.LENGTH_LONG).show();
+                }
                 break;
 
             case (R.id.infodelbutton):
@@ -471,7 +523,7 @@ public class DesplegableActivity extends AppCompatActivity
                         break;
                     }
                     Integer newVal = Integer.parseInt(newValString);
-                    if (newVal >= 0 && 10 >= newVal) {
+                    if (newVal >= 0 && 9 >= newVal) {
                         Film film = fragmentinfo.getFilm();
                         Film aux = film;
                         if (film != null) film.setCritics_rate(newVal);
